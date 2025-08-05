@@ -1,7 +1,6 @@
 'use client';
 
 import { FormField as FormFieldType, FieldConfig } from '@/types/form';
-import { getDefaultFieldConfig } from './available-fields';
 
 interface ConfigPanelProps {
   selectedField: FormFieldType | null;
@@ -64,7 +63,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
             type="text"
             value={selectedField.label}
             onChange={(e) => handleConfigChange('label', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 placeholder:text-[#9b9b9b]"
             placeholder="Enter field label"
           />
         </div>
@@ -76,7 +75,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
             type="text"
             value={selectedField.placeholder || ''}
             onChange={(e) => handleConfigChange('placeholder', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 placeholder:text-[#9b9b9b]"
             placeholder="Enter placeholder text"
           />
         </div>
@@ -88,7 +87,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
             value={selectedField.helpText || ''}
             onChange={(e) => handleConfigChange('helpText', e.target.value)}
             rows={2}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-800 placeholder:text-[#9b9b9b]"
             placeholder="Enter help text"
           />
         </div>
@@ -117,7 +116,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
                     type="text"
                     value={option}
                     onChange={(e) => handleOptionChange(index, e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 placeholder:text-[#9b9b9b]"
                   />
                   <button
                     onClick={() => removeOption(index)}
@@ -147,7 +146,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
                 type="number"
                 value={selectedField.min || 0}
                 onChange={(e) => handleConfigChange('min', parseInt(e.target.value) || 0)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 placeholder:text-[#9b9b9b]"
               />
             </div>
             <div>
@@ -156,7 +155,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
                 type="number"
                 value={selectedField.max || 100}
                 onChange={(e) => handleConfigChange('max', parseInt(e.target.value) || 100)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 placeholder:text-[#9b9b9b]"
               />
             </div>
           </div>

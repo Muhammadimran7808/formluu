@@ -23,7 +23,7 @@ export default function FormBuilder() {
       placeholder: '',
       helpText: '',
       required: false,
-      ...getDefaultFieldConfig(fieldType)
+      ...getDefaultFieldConfig(fieldType),
     };
 
     setFields([...fields, newField]);
@@ -49,7 +49,7 @@ export default function FormBuilder() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex bg-gray-100">
         {/* Left Panel - Available Fields */}
         <FieldsPanel />
 

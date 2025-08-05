@@ -17,7 +17,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
           <input
             type="text"
             placeholder={field.placeholder || 'Enter text...'}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
             disabled
           />
         );
@@ -25,9 +25,9 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
       case 'long-text':
         return (
           <textarea
-            placeholder={field.placeholder || 'Enter text...'}
+            placeholder={field.placeholder || "Enter text..."}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder:text-[#9b9b9b]"
             disabled
           />
         );
@@ -37,7 +37,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
           <input
             type="email"
             placeholder={field.placeholder || 'Enter email...'}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
             disabled
           />
         );
@@ -49,7 +49,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
             min={field.min}
             max={field.max}
             placeholder={field.placeholder || 'Enter number...'}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
             disabled
           />
         );
@@ -125,23 +125,28 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
     <div
       className={`
         p-4 border-2 rounded-lg cursor-pointer transition-all duration-200
-        ${isSelected 
-          ? 'border-blue-500 bg-blue-50' 
-          : 'border-gray-200 bg-white hover:border-gray-300'
+        ${
+          isSelected
+            ? "border-blue-500 bg-blue-50"
+            : "border-gray-200 bg-white hover:border-gray-300"
         }
       `}
       onClick={onSelect}
     >
       <div className="mb-2">
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          {field.label || 'Untitled Field'}
+          {field.label ? (
+            field.label
+          ) : (
+            <span className="text-[#9b9b9b]">Untitled Field</span>
+          )}
           {field.required && <span className="text-red-500 ml-1">*</span>}
         </label>
         {field.helpText && (
           <p className="text-xs text-gray-500 mb-2">{field.helpText}</p>
         )}
       </div>
-      
+
       {renderField()}
     </div>
   );
