@@ -1,4 +1,5 @@
 export type FieldType = 
+  | 'form-title'
   | 'short-text'
   | 'long-text'
   | 'email'
@@ -6,7 +7,8 @@ export type FieldType =
   | 'checkbox'
   | 'radio'
   | 'dropdown'
-  | 'nps';
+  | 'nps'
+  | 'submit-button';
 
 export interface FormField {
   id: string;

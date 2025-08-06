@@ -3,9 +3,8 @@
 import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { FormField as FormFieldType, FieldConfig } from '@/types/form';
+import { FormField as FormFieldType, FieldConfig, FieldType } from '@/types/form';
 import { getDefaultFieldConfig } from './available-fields';
-import FieldsPanel from './fields-panel';
 import FormCanvas from './form-canvas';
 import ConfigPanel from './config-panel';
 import PreviewModal from './preview-modal';
@@ -15,14 +14,14 @@ export default function FormBuilder() {
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const addField = (fieldType: string) => {
+  const addField = (fieldType: FieldType) => {
     const newField: FormFieldType = {
       id: `field-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      type: fieldType as any,
-      label: '',
-      placeholder: '',
-      helpText: '',
-      required: false,
+      type: fieldType,
+      // label: '',
+      // placeholder: '',
+      // helpText: '',
+      // required: false,
       ...getDefaultFieldConfig(fieldType),
     };
 
@@ -49,9 +48,7 @@ export default function FormBuilder() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex bg-gray-100">
-        {/* Left Panel - Available Fields */}
-        <FieldsPanel />
+      <div className="px-6 flex bg-gray-100">
 
         {/* Middle Panel - Form Canvas */}
         <div className="flex-1 flex flex-col">

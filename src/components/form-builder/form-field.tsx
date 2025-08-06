@@ -123,14 +123,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
 
   return (
     <div
-      className={`
-        p-4 border-2 rounded-lg cursor-pointer transition-all duration-200
-        ${
-          isSelected
-            ? "border-blue-500 bg-blue-50"
-            : "border-gray-200 bg-white hover:border-gray-300"
-        }
-      `}
+      className={`p-2 px-3 rounded-lg cursor-pointer ${ isSelected? " bg-blue-50" : " bg-white" }`}
       onClick={onSelect}
     >
       <div className="mb-2">
@@ -146,7 +139,6 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
           <p className="text-xs text-gray-500 mb-2">{field.helpText}</p>
         )}
       </div>
-
       {renderField()}
     </div>
   );
