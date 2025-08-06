@@ -11,134 +11,217 @@ interface FieldPickerModalProps {
   setSelectedFieldType: (type: string | null) => void;
 }
 
-const FIELD_DESCRIPTIONS: Record<string, { desc: string; example: JSX.Element }> = {
-  'short-text': {
-    desc: 'Use this to insert a question combined with a short text answer. Add an answer label or placeholder text for guidance.',
+const FIELD_DESCRIPTIONS: Record<
+  string,
+  { desc: string; example: JSX.Element }
+> = {
+  "short-text": {
+    desc: "Use this to insert a question combined with a short text answer. Add an answer label or placeholder text for guidance.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">What is your first name?</div>
-        <input className="border rounded px-3 py-2 w-full" placeholder="Short answer" />
+        <div className="text-gray-700 font-semibold mb-1">
+          What is your first name?
+        </div>
+        <input
+          className="border rounded px-3 py-2 w-full"
+          placeholder="Short answer"
+        />
       </div>
     ),
   },
-  'long-text': {
-    desc: 'Use this for longer, paragraph-style answers.',
+  "long-text": {
+    desc: "Use this for longer, paragraph-style answers.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">Tell us about yourself</div>
-        <textarea className="border rounded px-3 py-2 w-full" placeholder="Long answer" />
+        <div className="text-gray-700 font-semibold mb-1">
+          Tell us about yourself
+        </div>
+        <textarea
+          className="border rounded px-3 py-2 w-full"
+          placeholder="Long answer"
+        />
       </div>
     ),
   },
-  'email': {
-    desc: 'Collect a valid email address from the user.',
+  email: {
+    desc: "Collect a valid email address from the user.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">Your email address</div>
-        <input type="email" className="border rounded px-3 py-2 w-full" placeholder="example@email.com" />
+        <div className="text-gray-700 font-semibold mb-1">
+          Your email address
+        </div>
+        <input
+          type="email"
+          className="border rounded px-3 py-2 w-full"
+          placeholder="example@email.com"
+        />
       </div>
     ),
   },
-  'number': {
-    desc: 'Collect a numeric answer, such as age or quantity.',
+  number: {
+    desc: "Collect a numeric answer, such as age or quantity.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">How many years of experience?</div>
-        <input type="number" className="border rounded px-3 py-2 w-full" placeholder="0" />
+        <div className="text-gray-700 font-semibold mb-1">
+          How many years of experience?
+        </div>
+        <input
+          type="number"
+          className="border rounded px-3 py-2 w-full"
+          placeholder="0"
+        />
       </div>
     ),
   },
-  'checkbox': {
-    desc: 'Allow users to select one or more options.',
+  checkbox: {
+    desc: "Allow users to select one or more options.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">Select your hobbies</div>
-        <label className="flex items-center gap-2"><input type="checkbox" /> Reading</label>
-        <label className="flex items-center gap-2"><input type="checkbox" /> Sports</label>
+        <div className="text-gray-700 font-semibold mb-1">
+          Select your hobbies
+        </div>
+        <label className="flex items-center gap-2">
+          <input type="checkbox" /> Reading
+        </label>
+        <label className="flex items-center gap-2">
+          <input type="checkbox" /> Sports
+        </label>
       </div>
     ),
   },
-  'radio': {
-    desc: 'Allow users to select a single option from a list.',
+  radio: {
+    desc: "Allow users to select a single option from a list.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">Choose your gender</div>
-        <label className="flex items-center gap-2"><input type="radio" name="gender" /> Male</label>
-        <label className="flex items-center gap-2"><input type="radio" name="gender" /> Female</label>
+        <div className="text-gray-700 font-semibold mb-1">
+          Choose your gender
+        </div>
+        <label className="flex items-center gap-2">
+          <input type="radio" name="gender" /> Male
+        </label>
+        <label className="flex items-center gap-2">
+          <input type="radio" name="gender" /> Female
+        </label>
       </div>
     ),
   },
-  'dropdown': {
-    desc: 'Let users pick one option from a dropdown menu.',
+  dropdown: {
+    desc: "Let users pick one option from a dropdown menu.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">Select your country</div>
-        <select className="border rounded px-3 py-2 w-full"><option>USA</option><option>Canada</option></select>
+        <div className="text-gray-700 font-semibold mb-1">
+          Select your country
+        </div>
+        <select className="border rounded px-3 py-2 w-full">
+          <option>USA</option>
+          <option>Canada</option>
+        </select>
       </div>
     ),
   },
-  'nps': {
-    desc: 'Collect a Net Promoter Score (0-10) from users.',
+  nps: {
+    desc: "Collect a Net Promoter Score (0-10) from users.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">How likely are you to recommend us?</div>
-        <input type="range" min="0" max="10" className="w-full" />
+        <div className="text-gray-700 font-semibold mb-1">
+          How likely are you to recommend us?
+        </div>
+        <div className="flex justify-between gap-1">
+          {Array.from(
+            { length: (10) - (0) + 1 },
+            (_, i) => (
+              <button
+                type="button"
+                key={i}
+                className="w-8 h-8 border border-gray-300 text-black rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {(0) + i}
+              </button>
+            )
+          )}
+        </div>
       </div>
     ),
   },
-  'date': {
-    desc: 'Let users pick a date from a calendar.',
+  date: {
+    desc: "Let users pick a date from a calendar.",
     example: (
       <div>
         <div className="text-gray-700 font-semibold mb-1">Pick a date</div>
-        <input type="date" className="border rounded px-3 py-2 w-full" disabled />
+        <input
+          type="date"
+          className="border rounded px-3 py-2 w-full"
+          disabled
+        />
       </div>
     ),
   },
-  'time': {
-    desc: 'Let users select a time.',
+  time: {
+    desc: "Let users select a time.",
     example: (
       <div>
         <div className="text-gray-700 font-semibold mb-1">Pick a time</div>
-        <input type="time" className="border rounded px-3 py-2 w-full" disabled />
+        <input
+          type="time"
+          className="border rounded px-3 py-2 w-full"
+          disabled
+        />
       </div>
     ),
   },
-  'file': {
-    desc: 'Allow users to upload a file.',
+  file: {
+    desc: "Allow users to upload a file.",
     example: (
       <div>
         <div className="text-gray-700 font-semibold mb-1">Upload a file</div>
-        <input type="file" className="border rounded px-3 py-2 w-full" disabled />
+        <input
+          type="file"
+          className="border rounded px-3 py-2 w-full"
+          disabled
+        />
       </div>
     ),
   },
-  'phone': {
-    desc: 'Collect a phone number from the user.',
+  phone: {
+    desc: "Collect a phone number from the user.",
     example: (
       <div>
         <div className="text-gray-700 font-semibold mb-1">Phone number</div>
-        <input type="tel" className="border rounded px-3 py-2 w-full" placeholder="(555) 555-5555" disabled />
+        <input
+          type="tel"
+          className="border rounded px-3 py-2 w-full"
+          placeholder="(555) 555-5555"
+          disabled
+        />
       </div>
     ),
   },
-  'url': {
-    desc: 'Collect a website or URL from the user.',
+  url: {
+    desc: "Collect a website or URL from the user.",
     example: (
       <div>
         <div className="text-gray-700 font-semibold mb-1">Website</div>
-        <input type="url" className="border rounded px-3 py-2 w-full" placeholder="https://example.com" disabled />
+        <input
+          type="url"
+          className="border rounded px-3 py-2 w-full"
+          placeholder="https://example.com"
+          disabled
+        />
       </div>
     ),
   },
-  'rating': {
-    desc: 'Let users rate something with stars.',
+  rating: {
+    desc: "Let users rate something with stars.",
     example: (
       <div>
-        <div className="text-gray-700 font-semibold mb-1">Rate your experience</div>
+        <div className="text-gray-700 font-semibold mb-1">
+          Rate your experience
+        </div>
         <div className="flex gap-1">
           {[...Array(5)].map((_, i) => (
-            <span key={i} className="text-yellow-400 text-2xl">★</span>
+            <span key={i} className="text-yellow-400 text-2xl">
+              ★
+            </span>
           ))}
         </div>
       </div>
