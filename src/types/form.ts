@@ -8,7 +8,13 @@ export type FieldType =
   | 'radio'
   | 'dropdown'
   | 'nps'
-  | 'submit-button';
+  | 'submit-button'
+  | 'date'
+  | 'time'
+  | 'file'
+  | 'phone'
+  | 'url'
+  | 'rating';
 
 export interface FormField {
   id: string;
@@ -17,7 +23,7 @@ export interface FormField {
   placeholder?: string;
   helpText?: string;
   required: boolean;
-  options?: string[]; // For radio, dropdown
+  options?: string[]; // For radio, dropdown, checkbox
   min?: number; // For number, NPS
   max?: number; // For number, NPS
 }
@@ -33,7 +39,7 @@ export interface FieldConfig {
   placeholder?: string;
   helpText?: string;
   required: boolean;
-  options?: string[];
+  options?: string[]; // For radio, dropdown, checkbox
   min?: number;
   max?: number;
 }

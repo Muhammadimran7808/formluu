@@ -23,7 +23,7 @@ export const AVAILABLE_FIELDS: DraggableField[] = [
   },
   {
     type: 'checkbox',
-    label: 'Checkbox',
+    label: 'Checkboxes',
     icon: '☑️'
   },
   {
@@ -40,7 +40,38 @@ export const AVAILABLE_FIELDS: DraggableField[] = [
     type: 'nps',
     label: 'NPS',
     icon: '⭐'
-  }
+  },
+  // New field types
+  {
+    type: 'date',
+    label: 'Date',
+    icon: '📅'
+  },
+  {
+    type: 'time',
+    label: 'Time',
+    icon: '⏰'
+  },
+  {
+    type: 'file',
+    label: 'File Upload',
+    icon: '📁'
+  },
+  {
+    type: 'phone',
+    label: 'Phone',
+    icon: '📞'
+  },
+  {
+    type: 'url',
+    label: 'URL',
+    icon: '🔗'
+  },
+  {
+    type: 'rating',
+    label: 'Rating',
+    icon: '🌟'
+  },
 ];
 
 export const getDefaultFieldConfig = (type: string) => {
@@ -54,6 +85,7 @@ export const getDefaultFieldConfig = (type: string) => {
   switch (type) {
     case 'radio':
     case 'dropdown':
+    case 'checkbox':
       return {
         ...baseConfig,
         options: ['Option 1', 'Option 2', 'Option 3']

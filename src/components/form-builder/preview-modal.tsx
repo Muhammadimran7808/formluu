@@ -57,13 +57,17 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
       
       case 'checkbox':
         return (
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              required={field.required}
-              className="w-4 h-4 text-blue-600 border-gray-300 text-black rounded focus:ring-blue-500"
-            />
-            <span className="text-gray-700">Check this option</span>
+          <div className="space-y-2">
+            {field.options?.map((option, index) => (
+              <label key={index} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  required={field.required}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <span className="text-gray-700">{option}</span>
+              </label>
+            ))}
           </div>
         );
       
@@ -76,7 +80,7 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
                   type="radio"
                   required={field.required}
                   name={`radio-${field.id}`}
-                  className="w-4 h-4 text-blue-600 border-gray-300 text-black focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
                 <span className="text-gray-700">{option}</span>
               </div>
@@ -102,11 +106,7 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
       case 'nps':
         return (
           <div className="space-y-2">
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>{field.min || 0}</span>
-              <span>{field.max || 10}</span>
-            </div>
-            <div className="flex gap-1">
+            <div className="flex justify-between gap-1">
               {Array.from({ length: (field.max || 10) - (field.min || 0) + 1 }, (_, i) => (
                 <button
                   key={i}
@@ -116,6 +116,25 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
                 </button>
               ))}
             </div>
+          </div>
+        );
+      
+      case 'date':
+        return <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-md" />;
+      case 'time':
+        return <input type="time" className="w-full px-3 py-2 border border-gray-300 rounded-md" />;
+      case 'file':
+        return <input type="file" className="w-full px-3 py-2 border border-gray-300 rounded-md" />;
+      case 'phone':
+        return <input type="tel" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="(555) 555-5555" />;
+      case 'url':
+        return <input type="url" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://example.com" />;
+      case 'rating':
+        return (
+          <div className="flex gap-1">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className="text-yellow-400 text-2xl">★</span>
+            ))}
           </div>
         );
       

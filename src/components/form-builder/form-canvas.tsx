@@ -1,20 +1,69 @@
 'use client';
 
-import { useDrop } from 'react-dnd';
-import { FormField as FormFieldType } from '@/types/form';
+import { useDrag, useDrop } from 'react-dnd';
+import { FieldType, FormField as FormFieldType } from '@/types/form';
 import FormField from './form-field';
 import { DeleteOutlined } from '@ant-design/icons';
 import { PlusOutlined } from "@ant-design/icons";
-import { Input, Modal, Tooltip } from "antd";
-import { JSX, useState } from 'react';
-import { AVAILABLE_FIELDS } from './available-fields';
+import { Input, Tooltip } from "antd";
+import { useState } from 'react';
+import FieldPickerModal from './field-picker-modal';
+import DragIcon from '@/icons/drag';
+import React from 'react';
 
 interface FormCanvasProps {
   fields: FormFieldType[];
   selectedFieldId: string | null;
   onFieldSelect: (fieldId: string) => void;
-  onFieldAdd: (fieldType: string) => void;
+  onFieldAdd: (fieldType: FieldType, insertIndex?: number) => void;
   onFieldRemove: (fieldId: string) => void;
+  onFieldMove: (from: number, to: number) => void;
+}
+
+const ItemType = 'FORM_FIELD';
+
+function DraggableFormField({
+  field,
+  index,
+  moveField,
+  children,
+}: {
+  field: FormFieldType;
+  index: number;
+  moveField: (from: number, to: number) => void;
+  children: React.ReactNode;
+}) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [, drop] = useDrop({
+    accept: ItemType,
+    hover(item: { index: number }, monitor) {
+      if (!ref.current) return;
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) return;
+      // Only move when the mouse has crossed half of the item's height
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+      moveField(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemType,
+    item: { index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  drag(drop(ref));
+  return (
+    <div ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }}>{children}</div>
+  );
 }
 
 export default function FormCanvas({
@@ -22,121 +71,20 @@ export default function FormCanvas({
   selectedFieldId,
   onFieldSelect,
   onFieldAdd,
-  onFieldRemove
+  onFieldRemove,
+  onFieldMove,
 }: FormCanvasProps) {
   const [open, setOpen] = useState(false);
   const [selectedFieldType, setSelectedFieldType] = useState<string | null>(null);
-
-  // Helper: get field meta by type
-  const getFieldMeta = (type: string) => {
-    return AVAILABLE_FIELDS.find(f => f.type === type);
-  };
-
-  // Add descriptions and example previews for each field type
-  const FIELD_DESCRIPTIONS: Record<string, { desc: string; example: JSX.Element }> = {
-    'short-text': {
-      desc: 'Use this to insert a question combined with a short text answer. Add an answer label or placeholder text for guidance.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">What is your first name?</div>
-          <input className="border rounded px-3 py-2 w-full" placeholder="Short answer" />
-        </div>
-      ),
-    },
-    'long-text': {
-      desc: 'Use this for longer, paragraph-style answers.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">Tell us about yourself</div>
-          <textarea className="border rounded px-3 py-2 w-full" placeholder="Long answer" />
-        </div>
-      ),
-    },
-    'email': {
-      desc: 'Collect a valid email address from the user.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">Your email address</div>
-          <input type="email" className="border rounded px-3 py-2 w-full" placeholder="example@email.com" />
-        </div>
-      ),
-    },
-    'number': {
-      desc: 'Collect a numeric answer, such as age or quantity.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">How many years of experience?</div>
-          <input type="number" className="border rounded px-3 py-2 w-full" placeholder="0" />
-        </div>
-      ),
-    },
-    'checkbox': {
-      desc: 'Allow users to select one or more options.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">Select your hobbies</div>
-          <label className="flex items-center gap-2"><input type="checkbox" /> Reading</label>
-          <label className="flex items-center gap-2"><input type="checkbox" /> Sports</label>
-        </div>
-      ),
-    },
-    'radio': {
-      desc: 'Allow users to select a single option from a list.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">Choose your gender</div>
-          <label className="flex items-center gap-2"><input type="radio" name="gender" /> Male</label>
-          <label className="flex items-center gap-2"><input type="radio" name="gender" /> Female</label>
-        </div>
-      ),
-    },
-    'dropdown': {
-      desc: 'Let users pick one option from a dropdown menu.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">Select your country</div>
-          <select className="border rounded px-3 py-2 w-full"><option>USA</option><option>Canada</option></select>
-        </div>
-      ),
-    },
-    'nps': {
-      desc: 'Collect a Net Promoter Score (0-10) from users.',
-      example: (
-        <div>
-          <div className="text-gray-700 font-semibold mb-1">How likely are you to recommend us?</div>
-          <input type="range" min="0" max="10" className="w-full" />
-        </div>
-      ),
-    },
-  };
-
-  const [{ isOver }, drop] = useDrop({
-    accept: 'FIELD',
-    drop: (item: { type: string }) => {
-      onFieldAdd(item.type);
-    },
-    collect: (monitor: any) => ({
-      isOver: monitor.isOver(),
-    }),
-  });
+  const [insertIndex, setInsertIndex] = useState<number | null>(null);
 
   return (
     <div className="flex-1 bg-gray-50 p-6">
       <div className="mx-auto">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">
-            Form Builder
-          </h1>
-          <p className="text-gray-600">
-            Drag and drop elements to create your form
-          </p>
-        </div>
 
         <div
-          ref={drop}
           className={`
             min-h-[600px] bg-white rounded-lg border-2 border-dashed p-6
-            ${isOver ? "border-blue-400" : "border-gray-300"}
             transition-all duration-200
           `}
         >
@@ -149,40 +97,61 @@ export default function FormCanvas({
                 className="w-full px-3 py-2 placeholder:text-[#bbbab8] font-bold !text-4xl"
               />
             </div>
-            {fields.map((field) => (
-              <div key={field.id} className="mx-auto group flex gap-4">
-                {/* action buttons */}
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                  <Tooltip title="Click to delete this block">
-                    <button
-                      onClick={() => onFieldRemove(field.id)}
-                      className=" w-6 h-6 text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
-                    >
-                      <DeleteOutlined className="text-[#9b9b9b]" />
-                    </button>
-                  </Tooltip>
-                  <Tooltip title="Click to insert block below">
-                    <button
-                      onClick={() => setOpen(true)}
-                      className="w-6 h-6 text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
-                    >
-                      <PlusOutlined />
-                    </button>
-                  </Tooltip>
+            {fields.map((field, idx) => (
+              <DraggableFormField
+                key={field.id}
+                field={field}
+                index={idx}
+                moveField={onFieldMove}
+              >
+                <div className="mx-auto group flex gap-4">
+                  {/* action buttons */}
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                    <Tooltip title="Click to delete this block">
+                      <button
+                        onClick={() => onFieldRemove(field.id)}
+                        className=" w-6 h-6 cursor-pointer text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
+                      >
+                        <DeleteOutlined className="text-[#9b9b9b]" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Click to insert block below">
+                      <button
+                        onClick={() => { setOpen(true); setInsertIndex(idx + 1); }}
+                        className="w-6 h-6 cursor-pointer text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
+                      >
+                        <PlusOutlined />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Drag to move">
+                      <button
+                        className="flex items-center justify-center w-6 h-6 cursor-pointer hover:bg-[#0000000a] rounded-lg"
+                        ref={drag => {
+                          // Only the drag handle is draggable
+                          if (drag) drag;
+                        }}
+                        style={{ cursor: 'grab' }}
+                        tabIndex={-1}
+                        aria-label="Drag to reorder"
+                      >
+                        <DragIcon />
+                      </button>
+                    </Tooltip>
+                  </div>
+                  <div className="flex-1">
+                    <FormField
+                      field={field}
+                      isSelected={selectedFieldId === field.id}
+                      onSelect={() => onFieldSelect(field.id)}
+                    />
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <FormField
-                    field={field}
-                    isSelected={selectedFieldId === field.id}
-                    onSelect={() => onFieldSelect(field.id)}
-                  />
-                </div>
-              </div>
+              </DraggableFormField>
             ))}
             {/* Add button at the end of the form */}
             <div className="flex justify-center mt-4">
               <button
-                onClick={() => setOpen(true)}
+                onClick={() => { setOpen(true); setInsertIndex(null); }}
                 className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
               >
                 <PlusOutlined /> Add Field
@@ -191,91 +160,23 @@ export default function FormCanvas({
           </div>
         </div>
       </div>
-
-      {/* Modal for selecting form element */}
-      <Modal
-        open={open !== false}
-        onCancel={() => {
+      {/* Field Picker Modal */}
+      <FieldPickerModal
+        open={open}
+        onClose={() => {
           setOpen(false);
           setSelectedFieldType(null);
+          setInsertIndex(null);
         }}
-        width={700}
-        footer={null}
-        title={null}
-        styles={{content: {padding: 8}}}
-      >
-        <div className="flex h-[400px]">
-          {/* Left: List of fields */}
-          <div className="w-1/3 border-r bg-gray-50 overflow-y-auto">
-            <div className="p-2">
-              <div className="font-semibold text-gray-700 mb-2">Questions</div>
-              <div className="flex flex-col gap-1">
-                {AVAILABLE_FIELDS.map((field) => (
-                  <div
-                    key={field.type}
-                    className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer transition-all
-                  ${
-                    selectedFieldType === field.type
-                      ? "bg-white border-l-4 border-blue-500 font-bold"
-                      : "hover:bg-gray-100"
-                  }`}
-                    onClick={() => setSelectedFieldType(field.type)}
-                    onDoubleClick={() => {
-                      onFieldAdd(field.type);
-                      setOpen(false);
-                      setSelectedFieldType(null);
-                    }}
-                  >
-                    <span className="text-xl">{field.icon}</span>
-                    <span>{field.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          {/* Right: Details/preview/insert */}
-          <div className="flex-1 p-6 flex flex-col">
-            {selectedFieldType ? (
-              <>
-                <div className="text-xl font-bold mb-2 flex items-center gap-2">
-                  <span className="text-2xl">
-                    {getFieldMeta(selectedFieldType)?.icon}
-                  </span>
-                  {getFieldMeta(selectedFieldType)?.label}
-                </div>
-                <div className="text-gray-600 mb-4">
-                  {FIELD_DESCRIPTIONS[selectedFieldType]?.desc}
-                </div>
-                <div className="mb-4">
-                  <div className="text-xs text-gray-400 mb-1">Example</div>
-                  <div className="bg-gray-100 p-3 rounded">
-                    {FIELD_DESCRIPTIONS[selectedFieldType]?.example}
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded font-semibold w-full"
-                    onClick={() => {
-                      onFieldAdd(selectedFieldType);
-                      setOpen(false);
-                      setSelectedFieldType(null);
-                    }}
-                  >
-                    Insert
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-gray-400">
-                <span className="text-6xl mb-2">📝</span>
-                <div className="text-lg">
-                  Select a field type to see details
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </Modal>
+        onFieldAdd={(type) => {
+          onFieldAdd(type as FieldType, insertIndex ?? undefined);
+          setOpen(false);
+          setSelectedFieldType(null);
+          setInsertIndex(null);
+        }}
+        selectedFieldType={selectedFieldType}
+        setSelectedFieldType={setSelectedFieldType}
+      />
     </div>
   );
 } 

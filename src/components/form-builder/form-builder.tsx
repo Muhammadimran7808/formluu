@@ -14,18 +14,21 @@ export default function FormBuilder() {
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const addField = (fieldType: FieldType) => {
+  const addField = (fieldType: FieldType, insertIndex?: number) => {
     const newField: FormFieldType = {
       id: `field-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       type: fieldType,
-      // label: '',
-      // placeholder: '',
-      // helpText: '',
-      // required: false,
       ...getDefaultFieldConfig(fieldType),
     };
-
-    setFields([...fields, newField]);
+    setFields(prevFields => {
+      const updated = [...prevFields];
+      if (typeof insertIndex === 'number' && insertIndex >= 0 && insertIndex <= updated.length) {
+        updated.splice(insertIndex, 0, newField);
+      } else {
+        updated.push(newField);
+      }
+      return updated;
+    });
     setSelectedFieldId(newField.id);
   };
 
@@ -42,6 +45,15 @@ export default function FormBuilder() {
     if (selectedFieldId === fieldId) {
       setSelectedFieldId(null);
     }
+  };
+
+  const moveField = (from: number, to: number) => {
+    setFields(prevFields => {
+      const updated = [...prevFields];
+      const [removed] = updated.splice(from, 1);
+      updated.splice(to, 0, removed);
+      return updated;
+    });
   };
 
   const selectedField = fields.find(field => field.id === selectedFieldId) || null;
@@ -75,6 +87,7 @@ export default function FormBuilder() {
             onFieldSelect={setSelectedFieldId}
             onFieldAdd={addField}
             onFieldRemove={removeField}
+            onFieldMove={moveField}
           />
         </div>
 

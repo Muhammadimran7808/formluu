@@ -40,6 +40,8 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
     handleConfigChange('options', newOptions);
   };
 
+  const isOptionsField = selectedField?.type === 'radio' || selectedField?.type === 'dropdown' || selectedField?.type === 'checkbox';
+
   return (
     <div className="w-80 bg-gray-50 border-l border-gray-200 p-4 overflow-y-auto">
       <div className="mb-6">
@@ -106,7 +108,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
         </div>
 
         {/* Options for Radio/Dropdown */}
-        {(selectedField.type === 'radio' || selectedField.type === 'dropdown') && (
+        {isOptionsField && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Options</label>
             <div className="space-y-2">

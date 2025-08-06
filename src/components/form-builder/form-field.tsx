@@ -56,13 +56,17 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
       
       case 'checkbox':
         return (
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              disabled
-            />
-            <span className="text-gray-700">Check this option</span>
+          <div className="space-y-2">
+            {field.options?.map((option, index) => (
+              <label key={index} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  disabled
+                />
+                <span className="text-gray-700">{option}</span>
+              </label>
+            ))}
           </div>
         );
       
@@ -85,8 +89,13 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
       
       case 'dropdown':
         return (
-          <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" disabled>
-            <option value="">Select an option...</option>
+          <select
+            className="w-full text-[#9b9b9b] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            disabled
+          >
+            <option value="">
+              Select an option...
+            </option>
             {field.options?.map((option, index) => (
               <option key={index} value={option}>
                 {option}
@@ -99,10 +108,8 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
         return (
           <div className="space-y-2">
             <div className="flex justify-between text-sm text-gray-600">
-              <span>{field.min || 0}</span>
-              <span>{field.max || 10}</span>
             </div>
-            <div className="flex gap-1">
+            <div className="flex justify-between gap-1">
               {Array.from({ length: (field.max || 10) - (field.min || 0) + 1 }, (_, i) => (
                 <button
                   key={i}
@@ -113,6 +120,25 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
                 </button>
               ))}
             </div>
+          </div>
+        );
+      
+      case 'date':
+        return <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-md" disabled />;
+      case 'time':
+        return <input type="time" className="w-full px-3 py-2 border border-gray-300 rounded-md" disabled />;
+      case 'file':
+        return <input type="file" className="w-full px-3 py-2 border border-gray-300 rounded-md" disabled />;
+      case 'phone':
+        return <input type="tel" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="(555) 555-5555" disabled />;
+      case 'url':
+        return <input type="url" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://example.com" disabled />;
+      case 'rating':
+        return (
+          <div className="flex gap-1">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className="text-yellow-400 text-2xl">★</span>
+            ))}
           </div>
         );
       
