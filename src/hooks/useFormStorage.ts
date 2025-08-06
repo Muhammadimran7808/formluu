@@ -1,7 +1,6 @@
 import { FormField } from '@/types/form';
 import { useState, useEffect } from 'react';
 
-// Type for our stored form fields
 interface StoredForm {
   lastModified: number;
   fields: FormField[];
@@ -9,7 +8,10 @@ interface StoredForm {
 
 const STORAGE_KEY = 'formluu_current_form';
 
-export function useFormStorage() {
+export function useFormStorage(): {
+  fields: FormField[];
+  setFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+} {
   const [fields, setFields] = useState<FormField[]>([]);
 
   // Load fields from localStorage on initial mount

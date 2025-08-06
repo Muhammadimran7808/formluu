@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { FormField as FormFieldType } from '@/types/form';
+import { FieldType, FormField as FormFieldType } from '@/types/form';
 import { getDefaultFieldConfig } from './available-fields';
 import FormCanvas from './form-canvas';
 import ConfigPanel from './config-panel';
@@ -15,8 +15,8 @@ export default function FormBuilder() {
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const handleFieldAdd = (type: string, index?: number) => {
-    const newField = {
+  const handleFieldAdd = (type: FieldType, index?: number) => {
+    const newField: FormFieldType = {
       id: crypto.randomUUID(),
       type,
       ...getDefaultFieldConfig(type),
