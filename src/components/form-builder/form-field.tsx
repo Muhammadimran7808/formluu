@@ -2,6 +2,7 @@
 
 import { FormField as FormFieldType } from '@/types/form';
 import React from 'react';
+import { Rate } from 'antd';
 
 interface FormFieldProps {
   field: FormFieldType;
@@ -135,11 +136,12 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
         return <input type="url" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://example.com" disabled />;
       case 'rating':
         return (
-          <div className="flex gap-1">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="text-yellow-400 text-2xl">★</span>
-            ))}
-          </div>
+          <Rate 
+            disabled
+            count={field.count || 5}
+            allowHalf={field.allowHalf}
+            defaultValue={field.defaultValue || 0}
+          />
         );
       
       default:
@@ -168,4 +170,4 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
       {renderField()}
     </div>
   );
-} 
+}

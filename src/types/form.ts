@@ -26,6 +26,9 @@ export interface FormField {
   options?: string[]; // For radio, dropdown, checkbox
   min?: number; // For number, NPS
   max?: number; // For number, NPS
+  count?: number; // For rating
+  allowHalf?: boolean; // For rating
+  defaultValue?: number; // For rating
 }
 
 export interface FormConfig {
@@ -42,10 +45,13 @@ export interface FieldConfig {
   options?: string[]; // For radio, dropdown, checkbox
   min?: number;
   max?: number;
+  count?: number;
+  allowHalf?: boolean;
+  defaultValue?: number;
 }
 
 export interface DraggableField {
   type: FieldType;
   label: string;
   icon: string;
-} 
+}

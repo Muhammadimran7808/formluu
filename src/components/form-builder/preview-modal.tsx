@@ -1,6 +1,7 @@
 'use client';
 
 import { FormField as FormFieldType } from '@/types/form';
+import { Rate } from 'antd';
 
 interface PreviewModalProps {
   isOpen: boolean;
@@ -109,6 +110,7 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
             <div className="flex justify-between gap-1">
               {Array.from({ length: (field.max || 10) - (field.min || 0) + 1 }, (_, i) => (
                 <button
+                  type='button'
                   key={i}
                   className="w-8 h-8 border border-gray-300 text-black rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
@@ -131,11 +133,11 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
         return <input type="url" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://example.com" />;
       case 'rating':
         return (
-          <div className="flex gap-1">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="text-yellow-400 text-2xl">★</span>
-            ))}
-          </div>
+          <Rate
+            count={field.count || 5}
+            allowHalf={field.allowHalf}
+            defaultValue={field.defaultValue || 0}
+          />
         );
       
       default:
@@ -195,4 +197,4 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
       </div>
     </div>
   );
-} 
+}

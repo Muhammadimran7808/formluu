@@ -102,7 +102,14 @@ export const getDefaultFieldConfig = (type: string) => {
         min: 0,
         max: 10
       };
+    case 'rating':
+      return {
+        ...baseConfig,
+        count: 5,
+        allowHalf: false,
+        defaultValue: 0
+      };
     default:
       return baseConfig;
   }
-}; 
+};
