@@ -23,7 +23,6 @@ interface FormCanvasProps {
 const ItemType = 'FORM_FIELD';
 
 function DraggableFormField({
-  field,
   index,
   moveField,
   children,

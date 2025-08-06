@@ -3,56 +3,58 @@
 import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { FormField as FormFieldType, FieldConfig, FieldType } from '@/types/form';
+import { FormField as FormFieldType } from '@/types/form';
 import { getDefaultFieldConfig } from './available-fields';
 import FormCanvas from './form-canvas';
 import ConfigPanel from './config-panel';
 import PreviewModal from './preview-modal';
+import { useFormStorage } from '@/hooks/useFormStorage';
 
 export default function FormBuilder() {
-  const [fields, setFields] = useState<FormFieldType[]>([]);
+  const { fields, setFields } = useFormStorage();
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const addField = (fieldType: FieldType, insertIndex?: number) => {
-    const newField: FormFieldType = {
-      id: `field-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      type: fieldType,
-      ...getDefaultFieldConfig(fieldType),
+  const handleFieldAdd = (type: string, index?: number) => {
+    const newField = {
+      id: crypto.randomUUID(),
+      type,
+      ...getDefaultFieldConfig(type),
     };
-    setFields(prevFields => {
-      const updated = [...prevFields];
-      if (typeof insertIndex === 'number' && insertIndex >= 0 && insertIndex <= updated.length) {
-        updated.splice(insertIndex, 0, newField);
+
+    setFields(prev => {
+      const newFields = [...prev];
+      if (typeof index === 'number') {
+        newFields.splice(index, 0, newField);
       } else {
-        updated.push(newField);
+        newFields.push(newField);
       }
-      return updated;
+      return newFields;
     });
     setSelectedFieldId(newField.id);
   };
 
-  const updateField = (fieldId: string, config: Partial<FieldConfig>) => {
-    setFields(fields.map(field => 
-      field.id === fieldId 
-        ? { ...field, ...config }
-        : field
-    ));
+  const handleFieldUpdate = (id: string, updates: Partial<FormFieldType>) => {
+    setFields(prev =>
+      prev.map(field =>
+        field.id === id ? { ...field, ...updates } : field
+      )
+    );
   };
 
-  const removeField = (fieldId: string) => {
-    setFields(fields.filter(field => field.id !== fieldId));
-    if (selectedFieldId === fieldId) {
+  const handleFieldDelete = (id: string) => {
+    setFields(prev => prev.filter(field => field.id !== id));
+    if (selectedFieldId === id) {
       setSelectedFieldId(null);
     }
   };
 
-  const moveField = (from: number, to: number) => {
-    setFields(prevFields => {
-      const updated = [...prevFields];
-      const [removed] = updated.splice(from, 1);
-      updated.splice(to, 0, removed);
-      return updated;
+  const handleFieldMove = (dragIndex: number, hoverIndex: number) => {
+    setFields(prev => {
+      const newFields = [...prev];
+      const [draggedField] = newFields.splice(dragIndex, 1);
+      newFields.splice(hoverIndex, 0, draggedField);
+      return newFields;
     });
   };
 
@@ -85,16 +87,16 @@ export default function FormBuilder() {
             fields={fields}
             selectedFieldId={selectedFieldId}
             onFieldSelect={setSelectedFieldId}
-            onFieldAdd={addField}
-            onFieldRemove={removeField}
-            onFieldMove={moveField}
+            onFieldAdd={handleFieldAdd}
+            onFieldRemove={handleFieldDelete}
+            onFieldMove={handleFieldMove}
           />
         </div>
 
         {/* Right Panel - Configuration */}
         <ConfigPanel
           selectedField={selectedField}
-          onFieldUpdate={updateField}
+          onFieldUpdate={handleFieldUpdate}
         />
       </div>
 
@@ -106,4 +108,4 @@ export default function FormBuilder() {
       />
     </DndProvider>
   );
-} 
+}

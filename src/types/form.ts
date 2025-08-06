@@ -23,12 +23,12 @@ export interface FormField {
   placeholder?: string;
   helpText?: string;
   required: boolean;
-  options?: string[]; // For radio, dropdown, checkbox
-  min?: number; // For number, NPS
-  max?: number; // For number, NPS
-  count?: number; // For rating
-  allowHalf?: boolean; // For rating
-  defaultValue?: number; // For rating
+  options?: string[];
+  min?: number;
+  max?: number;
+  count?: number;
+  allowHalf?: boolean;
+  defaultValue?: number;
 }
 
 export interface FormConfig {
@@ -42,7 +42,7 @@ export interface FieldConfig {
   placeholder?: string;
   helpText?: string;
   required: boolean;
-  options?: string[]; // For radio, dropdown, checkbox
+  options?: string[];
   min?: number;
   max?: number;
   count?: number;
