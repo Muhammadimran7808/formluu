@@ -3,9 +3,9 @@
 import { useDrag, useDrop } from 'react-dnd';
 import { FieldType, FormField as FormFieldType } from '@/types/form';
 import FormField from './form-field';
-import { DeleteOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { PlusOutlined } from "@ant-design/icons";
-import { Input, Tooltip } from "antd";
+import { Button, Input, Popover, Tooltip } from "antd";
 import { useState } from 'react';
 import FieldPickerModal from './field-picker-modal';
 import DragIcon from '@/icons/drag';
@@ -18,6 +18,10 @@ interface FormCanvasProps {
   onFieldAdd: (fieldType: FieldType, insertIndex?: number) => void;
   onFieldRemove: (fieldId: string) => void;
   onFieldMove: (from: number, to: number) => void;
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  submitButtonText: string;
+  setSubmitButtonText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ItemType = 'FORM_FIELD';
@@ -72,28 +76,29 @@ export default function FormCanvas({
   onFieldAdd,
   onFieldRemove,
   onFieldMove,
+  title,
+  setTitle,
+  submitButtonText,
+  setSubmitButtonText,
 }: FormCanvasProps) {
   const [open, setOpen] = useState(false);
+  const [showSubmitTextPopover, setShowSubmitTextPopover] = useState(false);
   const [selectedFieldType, setSelectedFieldType] = useState<string | null>(null);
   const [insertIndex, setInsertIndex] = useState<number | null>(null);
 
   return (
-    <div className="flex-1 bg-gray-50 p-6">
+    <div className="bg-gray-50 p-6 mb-7">
       <div className="mx-auto">
-
-        <div
-          className={`
-            min-h-[600px] bg-white rounded-lg border-2 border-dashed p-6
-            transition-all duration-200
-          `}
-        >
-          <div className="space-y-4">
-            <div className="mb-4">
+        <div className={`min-h-[600px] bg-white`}>
+          <div className="flex flex-col space-y-4 max-w-xl mx-auto">
+            <div className="ml-[88px]">
               <Input
                 type="text"
                 placeholder={"Form title"}
                 variant="borderless"
-                className="w-full px-3 py-2 placeholder:text-[#bbbab8] font-bold !text-4xl"
+                className="w-full h-14 px-3 py-2 placeholder:text-[#bbbab8] font-bold !text-4xl"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </div>
             {fields.map((field, idx) => (
@@ -103,20 +108,23 @@ export default function FormCanvas({
                 index={idx}
                 moveField={onFieldMove}
               >
-                <div className="mx-auto group flex gap-4">
+                <div className="group flex gap-4">
                   {/* action buttons */}
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                     <Tooltip title="Click to delete this block">
                       <button
                         onClick={() => onFieldRemove(field.id)}
-                        className=" w-6 h-6 cursor-pointer text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
+                        className="w-6 h-6 cursor-pointer text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
                       >
                         <DeleteOutlined className="text-[#9b9b9b]" />
                       </button>
                     </Tooltip>
                     <Tooltip title="Click to insert block below">
                       <button
-                        onClick={() => { setOpen(true); setInsertIndex(idx + 1); }}
+                        onClick={() => {
+                          setOpen(true);
+                          setInsertIndex(idx + 1);
+                        }}
                         className="w-6 h-6 cursor-pointer text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
                       >
                         <PlusOutlined />
@@ -125,11 +133,11 @@ export default function FormCanvas({
                     <Tooltip title="Drag to move">
                       <button
                         className="flex items-center justify-center w-6 h-6 cursor-pointer hover:bg-[#0000000a] rounded-lg"
-                        ref={drag => {
+                        ref={(drag) => {
                           // Only the drag handle is draggable
                           if (drag) drag;
                         }}
-                        style={{ cursor: 'grab' }}
+                        style={{ cursor: "grab" }}
                         tabIndex={-1}
                         aria-label="Drag to reorder"
                       >
@@ -150,11 +158,48 @@ export default function FormCanvas({
             {/* Add button at the end of the form */}
             <div className="flex justify-center mt-4">
               <button
-                onClick={() => { setOpen(true); setInsertIndex(null); }}
+                onClick={() => {
+                  setOpen(true);
+                  setInsertIndex(null);
+                }}
                 className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
               >
                 <PlusOutlined /> Add Field
               </button>
+            </div>
+            <div className="ml-[88px] flex items-center gap-2 group">
+              <Popover
+                open={showSubmitTextPopover}
+                onOpenChange={setShowSubmitTextPopover}
+                trigger="click"
+                content={
+                  <div className="flex flex-col gap-1 p-1 rounded-xl bg-white min-w-[220px]">
+                    <label className="text-gray-700 font-semibold mb-1">
+                      Button label
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder={"Button label"}
+                      className="rounded-lg px-2 py-2 placeholder:text-[#bbbab8] !text-lg border-2 border-[#e5e7eb] focus:!border-blue-400 focus:!shadow-none"
+                      value={submitButtonText}
+                      onChange={(e) => setSubmitButtonText(e.target.value)}
+                      autoFocus
+                    />
+                  </div>
+                }
+              >
+                <div className="flex gap-3">
+                  <Tooltip title="Edit button label" placement='bottom'>
+                    <SettingOutlined className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  </Tooltip>
+                  <Button
+                    className="!bg-black !h-9 !text-white !font-bold focus:!border-0 flex items-center"
+                    onClick={() => setShowSubmitTextPopover(true)}
+                  >
+                    {submitButtonText || "Submit"} <ArrowRightOutlined />
+                  </Button>
+                </div>
+              </Popover>
             </div>
           </div>
         </div>

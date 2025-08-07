@@ -11,7 +11,7 @@ import PreviewModal from './preview-modal';
 import { useFormStorage } from '@/hooks/useFormStorage';
 
 export default function FormBuilder() {
-  const { fields, setFields } = useFormStorage();
+  const { fields, setFields, title, setTitle, submitButtonText, setSubmitButtonText } = useFormStorage();
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
@@ -90,6 +90,10 @@ export default function FormBuilder() {
             onFieldAdd={handleFieldAdd}
             onFieldRemove={handleFieldDelete}
             onFieldMove={handleFieldMove}
+            title={title}
+            setTitle={setTitle}
+            submitButtonText={submitButtonText}
+            setSubmitButtonText={setSubmitButtonText}
           />
         </div>
 
@@ -105,6 +109,8 @@ export default function FormBuilder() {
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
         fields={fields}
+        title={title}
+        submitButtonText={submitButtonText}
       />
     </DndProvider>
   );
