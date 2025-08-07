@@ -8,12 +8,14 @@ import { getDefaultFieldConfig } from './available-fields';
 import FormCanvas from './form-canvas';
 import ConfigPanel from './config-panel';
 import PreviewModal from './preview-modal';
+import FormConfigSidebar from './FormConfigSidebar';
 import { useFormStorage } from '@/hooks/useFormStorage';
 
 export default function FormBuilder() {
-  const { fields, setFields, title, setTitle, submitButtonText, setSubmitButtonText } = useFormStorage();
+  const { fields, setFields, title, setTitle, submitButtonText, setSubmitButtonText, formStyle, setFormStyle } = useFormStorage();
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isFormConfigOpen, setIsFormConfigOpen] = useState(false);
 
   const handleFieldAdd = (type: FieldType, index?: number) => {
     const newField: FormFieldType = {
@@ -63,7 +65,6 @@ export default function FormBuilder() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="px-6 flex bg-gray-100">
-
         {/* Middle Panel - Form Canvas */}
         <div className="flex-1 flex flex-col">
           {/* Header */}
@@ -94,14 +95,28 @@ export default function FormBuilder() {
             setTitle={setTitle}
             submitButtonText={submitButtonText}
             setSubmitButtonText={setSubmitButtonText}
+            onOpenFormConfigSidebar={() => {
+              setIsFormConfigOpen(true);
+              setSelectedFieldId(null);
+            }}
+            formStyle={formStyle}
           />
         </div>
 
         {/* Right Panel - Configuration */}
-        <ConfigPanel
-          selectedField={selectedField}
-          onFieldUpdate={handleFieldUpdate}
-        />
+        {isFormConfigOpen ? (
+          <FormConfigSidebar
+            open={isFormConfigOpen}
+            onClose={() => setIsFormConfigOpen(false)}
+            formStyle={formStyle}
+            setFormStyle={setFormStyle}
+          />
+        ) : (
+          <ConfigPanel
+            selectedField={selectedField}
+            onFieldUpdate={handleFieldUpdate}
+          />
+        )}
       </div>
 
       {/* Preview Modal */}

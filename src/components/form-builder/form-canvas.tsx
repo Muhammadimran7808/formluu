@@ -10,6 +10,7 @@ import { useState } from 'react';
 import FieldPickerModal from './field-picker-modal';
 import DragIcon from '@/icons/drag';
 import React from 'react';
+import { FormStyle } from './FormConfigSidebar';
 
 interface FormCanvasProps {
   fields: FormFieldType[];
@@ -22,6 +23,8 @@ interface FormCanvasProps {
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   submitButtonText: string;
   setSubmitButtonText: React.Dispatch<React.SetStateAction<string>>;
+  onOpenFormConfigSidebar: () => void;
+  formStyle: FormStyle;
 }
 
 const ItemType = 'FORM_FIELD';
@@ -80,6 +83,8 @@ export default function FormCanvas({
   setTitle,
   submitButtonText,
   setSubmitButtonText,
+  onOpenFormConfigSidebar,
+  formStyle,
 }: FormCanvasProps) {
   const [open, setOpen] = useState(false);
   const [showSubmitTextPopover, setShowSubmitTextPopover] = useState(false);
@@ -89,9 +94,34 @@ export default function FormCanvas({
   return (
     <div className="bg-gray-50 p-6 mb-7">
       <div className="mx-auto">
-        <div className={`min-h-[600px] bg-white`}>
+        <div
+          className={`min-h-[600px]`}
+          style={{
+            background: formStyle.bgColor,
+            color: formStyle.textColor,
+            fontFamily: formStyle.font,
+          }}
+        >
+          {formStyle.coverImage && (
+            <div className="w-full h-32 md:h-48 rounded-t-lg overflow-hidden mb-4">
+              <img
+                src={formStyle.coverImage}
+                alt="Cover"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+          {formStyle.logo && (
+            <div className="flex justify-center mb-2">
+              <img
+                src={formStyle.logo}
+                alt="Logo"
+                className="h-12 object-contain"
+              />
+            </div>
+          )}
           <div className="flex flex-col space-y-4 max-w-xl mx-auto">
-            <div className="ml-[88px]">
+            <div className="ml-[88px] relative group/title">
               <Input
                 type="text"
                 placeholder={"Form title"}
@@ -100,6 +130,15 @@ export default function FormCanvas({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover/title:opacity-100 transition-opacity bg-white border border-gray-200 rounded-full p-1 shadow hover:bg-gray-100"
+                onClick={onOpenFormConfigSidebar}
+                tabIndex={-1}
+                aria-label="Customize form style"
+              >
+                <SettingOutlined />
+              </button>
             </div>
             {fields.map((field, idx) => (
               <DraggableFormField
@@ -189,7 +228,7 @@ export default function FormCanvas({
                 }
               >
                 <div className="flex gap-3">
-                  <Tooltip title="Edit button label" placement='bottom'>
+                  <Tooltip title="Edit button label" placement="bottom">
                     <SettingOutlined className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                   </Tooltip>
                   <Button
