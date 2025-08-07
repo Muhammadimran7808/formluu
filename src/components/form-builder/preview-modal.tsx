@@ -1,15 +1,18 @@
 'use client';
 
 import { FormField as FormFieldType } from '@/types/form';
-import { Rate } from 'antd';
+import { ArrowRightOutlined } from '@ant-design/icons';
+import { Button, Rate } from 'antd';
 
 interface PreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   fields: FormFieldType[];
+  title: string;
+  submitButtonText: string;
 }
 
-export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalProps) {
+export default function PreviewModal({ isOpen, onClose, fields, title, submitButtonText }: PreviewModalProps) {
   if (!isOpen) return null;
 
   const renderPreviewField = (field: FormFieldType) => {
@@ -150,19 +153,38 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
       <div className="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-800">Form Preview</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Form Preview
+            </h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
         </div>
-        
-        <div className="p-6"> 
+
+        <div className="p-6">
+          {title && (
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-center text-gray-900">
+                {title}
+              </h1>
+            </div>
+          )}
           {fields.length === 0 ? (
             <div className="text-center text-gray-500 py-8">
               <div className="text-4xl mb-4">📝</div>
@@ -173,8 +195,10 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
               {fields.map((field) => (
                 <div key={field.id} className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    {field.label || 'Untitled Field'}
-                    {field.required && <span className="text-red-500 ml-1">*</span>}
+                    {field.label || "Untitled Field"}
+                    {field.required && (
+                      <span className="text-red-500 ml-1">*</span>
+                    )}
                   </label>
                   {field.helpText && (
                     <p className="text-xs text-gray-500">{field.helpText}</p>
@@ -182,14 +206,11 @@ export default function PreviewModal({ isOpen, onClose, fields }: PreviewModalPr
                   {renderPreviewField(field)}
                 </div>
               ))}
-              
+
               <div className="pt-4">
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                >
-                  Submit Form
-                </button>
+                <Button className="!bg-black !h-9 !text-white !font-bold focus:!border-0">
+                  {submitButtonText || "Submit"} <ArrowRightOutlined />
+                </Button>
               </div>
             </form>
           )}
