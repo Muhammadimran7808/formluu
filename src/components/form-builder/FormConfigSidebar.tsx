@@ -34,7 +34,7 @@ interface FormConfigSidebarProps {
 }
 
 const sidebarClass =
-  'w-80 bg-gray-50 border-l border-gray-200 p-4 h-screen overflow-y-auto';
+  'w-80 bg-gray-50 border-l border-gray-200 p-4 h-full overflow-y-auto';
 
 interface ColorInputProps {
   label: string;
@@ -108,6 +108,7 @@ export default function FormConfigSidebar({ open, onClose, formStyle, setFormSty
     setFormStyle({ ...formStyle, font });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleUpload = (key: 'logo' | 'coverImage', info: any) => {
     const file = info.file.originFileObj || info.file;
     const reader = new FileReader();

@@ -64,11 +64,10 @@ export default function FormBuilder() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="px-6 flex bg-gray-100">
-        {/* Middle Panel - Form Canvas */}
-        <div className="flex-1 flex flex-col">
+      <div className="flex bg-gray-100 h-screen relative">
+        <div className="flex-1 flex flex-col overflow-y-auto pr-80">
           {/* Header */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4">
+          <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold text-gray-800">Formluu</h1>
@@ -99,24 +98,26 @@ export default function FormBuilder() {
               setIsFormConfigOpen(true);
               setSelectedFieldId(null);
             }}
+            closeFromConfigModal={()=> setIsFormConfigOpen(false)}
             formStyle={formStyle}
           />
         </div>
 
         {/* Right Panel - Configuration */}
-        {isFormConfigOpen ? (
+        <div className="fixed right-0 top-0 h-full z-20 w-80">
+          {!isFormConfigOpen && (
+            <ConfigPanel
+              selectedField={selectedField}
+              onFieldUpdate={handleFieldUpdate}
+            />
+          )}
           <FormConfigSidebar
             open={isFormConfigOpen}
             onClose={() => setIsFormConfigOpen(false)}
             formStyle={formStyle}
             setFormStyle={setFormStyle}
           />
-        ) : (
-          <ConfigPanel
-            selectedField={selectedField}
-            onFieldUpdate={handleFieldUpdate}
-          />
-        )}
+        </div>
       </div>
 
       {/* Preview Modal */}

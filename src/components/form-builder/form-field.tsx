@@ -18,7 +18,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
           <input
             type="text"
             placeholder={field.placeholder || 'Enter text...'}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary rounded-md placeholder-primary"
             disabled
           />
         );
@@ -28,7 +28,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
           <textarea
             placeholder={field.placeholder || "Enter text..."}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary rounded-md resize-none placeholder-primary"
             disabled
           />
         );
@@ -38,7 +38,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
           <input
             type="email"
             placeholder={field.placeholder || 'Enter email...'}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary rounded-md placeholder-primary"
             disabled
           />
         );
@@ -50,7 +50,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
             min={field.min}
             max={field.max}
             placeholder={field.placeholder || 'Enter number...'}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary rounded-md placeholder-primary"
             disabled
           />
         );
@@ -62,10 +62,10 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
               <label key={index} className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                   disabled
                 />
-                <span className="text-gray-700">{option}</span>
+                <span className="label-light">{option}</span>
               </label>
             ))}
           </div>
@@ -79,10 +79,10 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
                 <input
                   type="radio"
                   name={`radio-${field.id}`}
-                  className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
                   disabled
                 />
-                <span className="text-gray-700">{option}</span>
+                <span className="label-light">{option}</span>
               </div>
             ))}
           </div>
@@ -91,12 +91,10 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
       case 'dropdown':
         return (
           <select
-            className="w-full text-[#9b9b9b] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full label-light px-3 py-2 border border-primary rounded-md"
             disabled
           >
-            <option value="">
-              Select an option...
-            </option>
+            <option value="">Select an option...</option>
             {field.options?.map((option, index) => (
               <option key={index} value={option}>
                 {option}
@@ -114,7 +112,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
               {Array.from({ length: (field.max || 10) - (field.min || 0) + 1 }, (_, i) => (
                 <button
                   key={i}
-                  className="w-8 h-8 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+                  className="w-8 h-8 border border-primary rounded hover:bg-gray-50 disabled:opacity-50"
                   disabled
                 >
                   {(field.min || 0) + i}
@@ -125,15 +123,15 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
         );
       
       case 'date':
-        return <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-md" disabled />;
+        return <input type="date" className="w-full px-3 py-2 label-light border border-primary rounded-md" disabled />;
       case 'time':
-        return <input type="time" className="w-full px-3 py-2 border border-gray-300 rounded-md" disabled />;
+        return <input type="time" className="w-full px-3 py-2 border border-primary rounded-md" disabled />;
       case 'file':
-        return <input type="file" className="w-full px-3 py-2 border border-gray-300 rounded-md" disabled />;
+        return <input type="file" className="w-full label-light px-3 py-2 border border-primary rounded-md" disabled />;
       case 'phone':
-        return <input type="tel" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="(555) 555-5555" disabled />;
+        return <input type="tel" className="w-full px-3 py-2 border border-primary rounded-md" placeholder="(555) 555-5555" disabled />;
       case 'url':
-        return <input type="url" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://example.com" disabled />;
+        return <input type="url" className="w-full px-3 py-2 border border-primary rounded-md" placeholder="https://example.com" disabled />;
       case 'rating':
         return (
           <Rate 
@@ -151,20 +149,22 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
 
   return (
     <div
-      className={`p-2 px-3 rounded-lg cursor-pointer ${ isSelected? " bg-blue-50" : " bg-white" }`}
+      className={`p-2 px-3 rounded-lg cursor-pointer ${
+        isSelected ? " bg-primary-light" : " bg-primary"
+      }`}
       onClick={onSelect}
     >
       <div className="mb-2">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-primary mb-1">
           {field.label ? (
             field.label
           ) : (
-            <span className="text-[#9b9b9b]">Untitled Field</span>
+            <span className="label-light">Untitled Field</span>
           )}
           {field.required && <span className="text-red-500 ml-1">*</span>}
         </label>
         {field.helpText && (
-          <p className="text-xs text-gray-500 mb-2">{field.helpText}</p>
+          <p className="text-xs label-light mb-2">{field.helpText}</p>
         )}
       </div>
       {renderField()}
