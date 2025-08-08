@@ -1,5 +1,5 @@
-import { FormField } from '@/types/form';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { FormField } from "@/types/form";
 
 interface FormStyle {
   bgColor: string;
@@ -19,7 +19,7 @@ interface StoredForm {
   formStyle: FormStyle;
 }
 
-const STORAGE_KEY = 'formluu_current_form';
+const STORAGE_KEY = "formluu_current_form";
 
 export function useFormStorage(): {
   fields: FormField[];
@@ -32,43 +32,55 @@ export function useFormStorage(): {
   setFormStyle: React.Dispatch<React.SetStateAction<FormStyle>>;
 } {
   const [fields, setFields] = useState<FormField[]>([]);
-  const [title, setTitle] = useState<string>('');
-  const [submitButtonText, setSubmitButtonText] = useState<string>('Submit');
+  const [title, setTitle] = useState<string>("Untitled Form");
+  const [submitButtonText, setSubmitButtonText] = useState<string>("Submit");
   const [formStyle, setFormStyle] = useState<FormStyle>({
-    bgColor: '#ffffff',
-    textColor: '#222222',
-    font: 'Inter',
-    buttonBgColor: '#000000',
-    buttonTextColor: '#ffffff',
-    logo: '',
-    coverImage: '',
+    bgColor: "#ffffff",
+    textColor: "#222222",
+    font: "Inter",
+    buttonBgColor: "#000000",
+    buttonTextColor: "#ffffff",
+    logo: "",
+    coverImage: "",
   });
 
-  // Load fields and title from localStorage on initial mount
+  // Load stored data on first mount
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        const { fields, title, submitButtonText, formStyle } = JSON.parse(stored) as StoredForm;
-        setFields(fields || []);
-        setTitle(title || '');
-        setSubmitButtonText(submitButtonText || 'Submit');
-        setFormStyle(formStyle || {
-          bgColor: '#ffffff',
-          textColor: '#222222',
-          font: 'Inter',
-          buttonBgColor: '#000000',
-          buttonTextColor: '#ffffff',
-          logo: '',
-          coverImage: '',
+        const parsed = JSON.parse(stored) as StoredForm;
+        setFields(parsed.fields || []);
+        setTitle(parsed.title || "Untitled Form");
+        setSubmitButtonText(parsed.submitButtonText || "Submit");
+        const storedStyle = parsed.formStyle || {};
+
+        setFormStyle({
+          bgColor: storedStyle.bgColor || "#ffffff",
+          textColor: storedStyle.textColor || "#222222",
+          font: storedStyle.font || "Inter",
+          buttonBgColor: storedStyle.buttonBgColor || "#000000",
+          buttonTextColor: storedStyle.buttonTextColor || "#ffffff",
+          logo: storedStyle.logo || "",
+          coverImage: storedStyle.coverImage || "",
         });
+
+        // Immediately apply style to CSS variables
+        document.documentElement.style.setProperty(
+          "--bg-color",
+          storedStyle.bgColor || "#ffffff"
+        );
+        document.documentElement.style.setProperty(
+          "--text-color",
+          storedStyle.textColor || "#222222"
+        );
       } catch (err) {
-        console.error('Failed to load stored form:', err);
+        console.error("Failed to load stored form:", err);
       }
     }
   }, []);
 
-  // Save fields and title to localStorage whenever they change
+  // Update localStorage when data changes
   useEffect(() => {
     const storedForm: StoredForm = {
       lastModified: Date.now(),
@@ -79,6 +91,22 @@ export function useFormStorage(): {
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(storedForm));
   }, [fields, title, submitButtonText, formStyle]);
+
+  // Update CSS variables when formStyle changes
+  useEffect(() => {
+    if (formStyle.bgColor) {
+      document.documentElement.style.setProperty(
+        "--bg-color",
+        formStyle.bgColor
+      );
+    }
+    if (formStyle.textColor) {
+      document.documentElement.style.setProperty(
+        "--text-color",
+        formStyle.textColor
+      );
+    }
+  }, [formStyle.bgColor, formStyle.textColor]);
 
   return {
     fields,

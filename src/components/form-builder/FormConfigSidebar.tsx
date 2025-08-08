@@ -108,6 +108,7 @@ export default function FormConfigSidebar({ open, onClose, formStyle, setFormSty
     setFormStyle({ ...formStyle, font });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleUpload = (key: 'logo' | 'coverImage', info: any) => {
     const file = info.file.originFileObj || info.file;
     const reader = new FileReader();

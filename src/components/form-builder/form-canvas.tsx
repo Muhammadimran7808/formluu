@@ -134,13 +134,13 @@ export default function FormCanvas({
               />
             </div>
           )}
-          <div className="flex flex-col space-y-4 max-w-xl mx-auto mt-8">
+          <div className="flex flex-col space-y-4 max-w-xl mx-auto mt-10">
             <div className="ml-[88px] relative group/title">
               <Input
                 type="text"
                 placeholder={"Form title"}
                 variant="borderless"
-                className="w-full h-14 px-3 py-2 placeholder:text-[#bbbab8] font-bold !text-4xl"
+                className="w-full text-primary h-14 px-3 py-2 placeholder-primary font-bold !text-4xl"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -167,9 +167,9 @@ export default function FormCanvas({
                     <Tooltip title="Click to delete this block">
                       <button
                         onClick={() => onFieldRemove(field.id)}
-                        className="w-6 h-6 cursor-pointer text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
+                        className="w-6 h-6 cursor-pointer text-primary-light hover:bg-[#0000000a] rounded-lg"
                       >
-                        <DeleteOutlined className="text-[#9b9b9b]" />
+                        <DeleteOutlined />
                       </button>
                     </Tooltip>
                     <Tooltip title="Click to insert block below">
@@ -178,14 +178,14 @@ export default function FormCanvas({
                           setOpen(true);
                           setInsertIndex(idx + 1);
                         }}
-                        className="w-6 h-6 cursor-pointer text-[#898884] hover:text-black hover:bg-[#0000000a] rounded-lg"
+                        className="w-6 h-6 cursor-pointer text-primary-light hover:bg-[#0000000a] rounded-lg"
                       >
                         <PlusOutlined />
                       </button>
                     </Tooltip>
                     <Tooltip title="Drag to move">
                       <button
-                        className="flex items-center justify-center w-6 h-6 cursor-pointer hover:bg-[#0000000a] rounded-lg"
+                        className="flex items-center justify-center w-6 h-6 cursor-pointer text-primary-light hover:bg-[#0000000a] rounded-lg"
                         ref={(drag) => {
                           // Only the drag handle is draggable
                           if (drag) drag;
@@ -215,7 +215,7 @@ export default function FormCanvas({
                   setOpen(true);
                   setInsertIndex(null);
                 }}
-                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                className="flex items-center gap-2 px-4 py-2 border border-primary rounded-lg text-primary hover:bg-gray-100"
               >
                 <PlusOutlined /> Add Field
               </button>
