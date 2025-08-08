@@ -126,6 +126,7 @@ export default function FormBuilder() {
         fields={fields}
         title={title}
         submitButtonText={submitButtonText}
+        formStyle={formStyle}
       />
     </DndProvider>
   );
