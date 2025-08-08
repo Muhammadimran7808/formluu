@@ -29,6 +29,9 @@ body {
 .bg-primary {
   background-color: var(--bg-color);
 }
+.bg-primary-light {
+  background-color: color-mix(in srgb, var(--bg-color) 94%, white);;
+}
 
 .text-primary {
   color: var(--text-color) !important;

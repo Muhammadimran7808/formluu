@@ -25,7 +25,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
             type="text"
             required={field.required}
             placeholder={field.placeholder || "Enter text..."}
-            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary text-primary rounded-md focus:outline-none placeholder-primary"
           />
         );
       
@@ -35,7 +35,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
             placeholder={field.placeholder || "Enter text..."}
             required={field.required}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary text-primary rounded-md focus:outline-none resize-none placeholder-primary"
           />
         );
       
@@ -45,7 +45,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
             type="email"
             required={field.required}
             placeholder={field.placeholder || "Enter email..."}
-            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary text-primary rounded-md focus:outline-none placeholder-primary"
           />
         );
       
@@ -57,7 +57,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
             max={field.max}
             required={field.required}
             placeholder={field.placeholder || "Enter number..."}
-            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#9b9b9b]"
+            className="w-full px-3 py-2 border border-primary text-primary rounded-md focus:outline-none placeholder-primary"
           />
         );
       
@@ -69,9 +69,9 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
                 <input
                   type="checkbox"
                   required={field.required}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 border-primary rounded focus:ring-blue-500"
                 />
-                <span className="text-gray-700">{option}</span>
+                <span className="text-primary">{option}</span>
               </label>
             ))}
           </div>
@@ -86,9 +86,9 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
                   type="radio"
                   required={field.required}
                   name={`radio-${field.id}`}
-                  className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 border-primary focus:ring-blue-500"
                 />
-                <span className="text-gray-700">{option}</span>
+                <span className="text-primary">{option}</span>
               </div>
             ))}
           </div>
@@ -98,7 +98,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
         return (
           <select
             required={field.required}
-            className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-primary text-primary rounded-md focus:outline-none"
           >
             <option value="">Select an option...</option>
             {field.options?.map((option, index) => (
@@ -117,7 +117,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
                 <button
                   type='button'
                   key={i}
-                  className="w-8 h-8 border border-gray-300 text-black rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-8 h-8 border border-primary text-primary rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {(field.min || 0) + i}
                 </button>
@@ -127,15 +127,15 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
         );
       
       case 'date':
-        return <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-md" />;
+        return <input type="date" className="w-full px-3 py-2 border border-primary rounded-md" />;
       case 'time':
-        return <input type="time" className="w-full px-3 py-2 border border-gray-300 rounded-md" />;
+        return <input type="time" className="w-full px-3 py-2 border border-primary rounded-md" />;
       case 'file':
-        return <input type="file" className="w-full px-3 py-2 border border-gray-300 rounded-md" />;
+        return <input type="file" className="w-full px-3 py-2 border border-primary rounded-md" />;
       case 'phone':
-        return <input type="tel" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="(555) 555-5555" />;
+        return <input type="tel" className="w-full px-3 py-2 border border-primary rounded-md" placeholder="(555) 555-5555" />;
       case 'url':
-        return <input type="url" className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://example.com" />;
+        return <input type="url" className="w-full px-3 py-2 border border-primary rounded-md" placeholder="https://example.com" />;
       case 'rating':
         return (
           <Rate
@@ -151,16 +151,16 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200">
+    <div className="fixed inset-0 bg-[#000000b3] bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-primary rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-primary">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-xl font-semibold text-primary">
               Form Preview
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-primary-light transition-colors"
             >
               <svg
                 className="w-6 h-6"
@@ -235,14 +235,14 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
             <form className="space-y-6">
               {fields.map((field) => (
                 <div key={field.id} className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-primary">
                     {field.label || "Untitled Field"}
                     {field.required && (
                       <span className="text-red-500 ml-1">*</span>
                     )}
                   </label>
                   {field.helpText && (
-                    <p className="text-xs text-gray-500">{field.helpText}</p>
+                    <p className="text-xs label-light">{field.helpText}</p>
                   )}
                   {renderPreviewField(field)}
                 </div>

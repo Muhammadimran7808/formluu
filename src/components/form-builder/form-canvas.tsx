@@ -24,6 +24,7 @@ interface FormCanvasProps {
   submitButtonText: string;
   setSubmitButtonText: React.Dispatch<React.SetStateAction<string>>;
   onOpenFormConfigSidebar: () => void;
+  closeFromConfigModal: () => void;
   formStyle: FormStyle;
 }
 
@@ -84,6 +85,7 @@ export default function FormCanvas({
   submitButtonText,
   setSubmitButtonText,
   onOpenFormConfigSidebar,
+  closeFromConfigModal,
   formStyle,
 }: FormCanvasProps) {
   const [open, setOpen] = useState(false);
@@ -202,7 +204,10 @@ export default function FormCanvas({
                     <FormField
                       field={field}
                       isSelected={selectedFieldId === field.id}
-                      onSelect={() => onFieldSelect(field.id)}
+                      onSelect={() => {
+                        onFieldSelect(field.id)
+                        closeFromConfigModal();
+                      }}
                     />
                   </div>
                 </div>

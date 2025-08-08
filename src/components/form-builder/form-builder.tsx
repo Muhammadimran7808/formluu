@@ -98,6 +98,7 @@ export default function FormBuilder() {
               setIsFormConfigOpen(true);
               setSelectedFieldId(null);
             }}
+            closeFromConfigModal={()=> setIsFormConfigOpen(false)}
             formStyle={formStyle}
           />
         </div>

@@ -150,7 +150,7 @@ export default function FormField({ field, isSelected, onSelect }: FormFieldProp
   return (
     <div
       className={`p-2 px-3 rounded-lg cursor-pointer ${
-        isSelected ? " bg-blue-50" : " bg-white"
+        isSelected ? " bg-primary-light" : " bg-primary"
       }`}
       onClick={onSelect}
     >
