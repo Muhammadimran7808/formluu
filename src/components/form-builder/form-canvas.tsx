@@ -3,9 +3,9 @@
 import { useDrag, useDrop } from 'react-dnd';
 import { FieldType, FormField as FormFieldType } from '@/types/form';
 import FormField from './form-field';
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, SettingOutlined } from '@ant-design/icons';
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Input, Popover, Tooltip } from "antd";
+import { Button, Input, Popover, Tooltip, Image } from "antd";
 import { useState } from 'react';
 import FieldPickerModal from './field-picker-modal';
 import DragIcon from '@/icons/drag';
@@ -95,7 +95,7 @@ export default function FormCanvas({
     <div className="bg-gray-50 p-6 mb-7">
       <div className="mx-auto">
         <div
-          className={`min-h-[600px]`}
+          className={`min-h-[600px] rounded-lg transition-all duration-200 relative overflow-hidden`}
           style={{
             background: formStyle.bgColor,
             color: formStyle.textColor,
@@ -103,24 +103,38 @@ export default function FormCanvas({
           }}
         >
           {formStyle.coverImage && (
-            <div className="w-full h-32 md:h-48 rounded-t-lg overflow-hidden mb-4">
-              <img
+            <div className="w-full h-48 md:h-64 relative">
+              <Image
                 src={formStyle.coverImage}
                 alt="Cover"
-                className="w-full h-full object-cover"
+                width={"100%"}
+                height={"100%"}
+                className="object-cover"
+                preview={false}
               />
+              {formStyle.logo && (
+                <div className="absolute h-20 w-20 bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white rounded-full shadow-lg overflow-hidden">
+                  <Image
+                    src={formStyle.logo}
+                    alt="Logo"
+                    className="!h-full !w-full object-contain"
+                    preview={false}
+                  />
+                </div>
+              )}
             </div>
           )}
-          {formStyle.logo && (
-            <div className="flex justify-center mb-2">
-              <img
+          {formStyle.logo && !formStyle.coverImage && (
+            <div className="flex justify-center mb-4 mt-4">
+              <Image
                 src={formStyle.logo}
                 alt="Logo"
-                className="h-12 object-contain"
+                className="!h-16 object-contain"
+                preview={false}
               />
             </div>
           )}
-          <div className="flex flex-col space-y-4 max-w-xl mx-auto">
+          <div className="flex flex-col space-y-4 max-w-xl mx-auto mt-8">
             <div className="ml-[88px] relative group/title">
               <Input
                 type="text"

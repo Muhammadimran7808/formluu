@@ -2,7 +2,8 @@
 
 import { FormField as FormFieldType } from '@/types/form';
 import { ArrowRightOutlined } from '@ant-design/icons';
-import { Button, Rate } from 'antd';
+import { Button, Rate, Image } from 'antd';
+import { FormStyle } from './FormConfigSidebar';
 
 interface PreviewModalProps {
   isOpen: boolean;
@@ -10,9 +11,10 @@ interface PreviewModalProps {
   fields: FormFieldType[];
   title: string;
   submitButtonText: string;
+  formStyle: FormStyle;
 }
 
-export default function PreviewModal({ isOpen, onClose, fields, title, submitButtonText }: PreviewModalProps) {
+export default function PreviewModal({ isOpen, onClose, fields, title, submitButtonText, formStyle }: PreviewModalProps) {
   if (!isOpen) return null;
 
   const renderPreviewField = (field: FormFieldType) => {
@@ -177,10 +179,49 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
           </div>
         </div>
 
-        <div className="p-6">
+        <div 
+          className="p-6"
+          style={{
+            background: formStyle.bgColor,
+            color: formStyle.textColor,
+            fontFamily: formStyle.font,
+          }}
+        >
+          {formStyle.coverImage && (
+            <div className="w-full h-48 md:h-64 relative mb-14">
+              <Image
+                src={formStyle.coverImage}
+                alt="Cover"
+                width={"100%"}
+                height={"100%"}
+                className="object-cover"
+                preview={false}
+              />
+              {formStyle.logo && (
+                <div className="absolute h-20 w-20 bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white rounded-full shadow-lg overflow-hidden">
+                  <Image
+                    src={formStyle.logo}
+                    alt="Logo"
+                    className="!h-full !w-full object-contain"
+                    preview={false}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+          {formStyle.logo && !formStyle.coverImage && (
+            <div className="flex justify-center mb-6">
+              <Image
+                src={formStyle.logo}
+                alt="Logo"
+                className="!h-16 object-contain"
+                preview={false}
+              />
+            </div>
+          )}
           {title && (
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-center text-gray-900">
+              <h1 className="text-3xl font-bold text-center" style={{ color: formStyle.textColor }}>
                 {title}
               </h1>
             </div>
@@ -208,7 +249,13 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
               ))}
 
               <div className="pt-4">
-                <Button className="!bg-black !h-9 !text-white !font-bold focus:!border-0">
+                <Button 
+                  className="!h-9 !font-bold focus:!border-0"
+                  style={{
+                    backgroundColor: formStyle.buttonBgColor,
+                    color: formStyle.buttonTextColor,
+                  }}
+                >
                   {submitButtonText || "Submit"} <ArrowRightOutlined />
                 </Button>
               </div>
