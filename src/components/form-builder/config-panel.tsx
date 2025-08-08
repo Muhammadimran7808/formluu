@@ -43,7 +43,7 @@ export default function ConfigPanel({ selectedField, onFieldUpdate }: ConfigPane
   const isOptionsField = selectedField?.type === 'radio' || selectedField?.type === 'dropdown' || selectedField?.type === 'checkbox';
 
   return (
-    <div className="w-80 bg-gray-50 border-l border-gray-200 p-4 overflow-y-auto">
+    <div className="w-80 bg-gray-50 border-l border-gray-200 p-4 overflow-y-auto h-full">
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-2">Field Configuration</h2>
         <p className="text-sm text-gray-600">Configure the selected field</p>

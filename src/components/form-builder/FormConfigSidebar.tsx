@@ -34,7 +34,7 @@ interface FormConfigSidebarProps {
 }
 
 const sidebarClass =
-  'w-80 bg-gray-50 border-l border-gray-200 p-4 h-screen overflow-y-auto';
+  'w-80 bg-gray-50 border-l border-gray-200 p-4 h-full overflow-y-auto';
 
 interface ColorInputProps {
   label: string;

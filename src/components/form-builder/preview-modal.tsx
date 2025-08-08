@@ -250,6 +250,8 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
 
               <div className="pt-4">
                 <Button 
+                  type='primary'
+                  onSubmit={()=> console.log("")}
                   className="!h-9 !font-bold focus:!border-0"
                   style={{
                     backgroundColor: formStyle.buttonBgColor,
