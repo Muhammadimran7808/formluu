@@ -205,7 +205,7 @@ export default function FormCanvas({
                       field={field}
                       isSelected={selectedFieldId === field.id}
                       onSelect={() => {
-                        onFieldSelect(field.id)
+                        onFieldSelect(field.id);
                         closeFromConfigModal();
                       }}
                     />
@@ -251,7 +251,7 @@ export default function FormCanvas({
                     <SettingOutlined className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                   </Tooltip>
                   <Button
-                    className="!bg-black !h-9 !text-white !font-bold focus:!border-0 flex items-center"
+                    className="btn-bg-primary !h-9 btn-text-primary !font-bold focus:!border-0 flex items-center"
                     onClick={() => setShowSubmitTextPopover(true)}
                   >
                     {submitButtonText || "Submit"} <ArrowRightOutlined />

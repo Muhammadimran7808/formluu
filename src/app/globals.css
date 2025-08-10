@@ -5,6 +5,8 @@
   --foreground: #171717;
   --bg-color: #ffffff;
   --text-color: #000000;
+  --btn-text-color: #ffffff;
+  --btn-bg-color: #000000;
 }
 
 @theme inline {
@@ -57,4 +59,13 @@ body {
 
 .label-light {
   color: color-mix(in srgb, var(--text-color) 50%, white);
+}
+
+/* Submit button */
+.btn-text-primary {
+  color: var(--btn-text-color) !important;
+}
+
+.btn-bg-primary {
+  background-color: var(--btn-bg-color) !important;
 }

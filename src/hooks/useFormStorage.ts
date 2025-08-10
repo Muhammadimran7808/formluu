@@ -66,14 +66,10 @@ export function useFormStorage(): {
         });
 
         // Immediately apply style to CSS variables
-        document.documentElement.style.setProperty(
-          "--bg-color",
-          storedStyle.bgColor || "#ffffff"
-        );
-        document.documentElement.style.setProperty(
-          "--text-color",
-          storedStyle.textColor || "#222222"
-        );
+        document.documentElement.style.setProperty("--bg-color",storedStyle.bgColor || "#ffffff");
+        document.documentElement.style.setProperty("--text-color",storedStyle.textColor || "#222222");
+        document.documentElement.style.setProperty("--btn-text-color",storedStyle.buttonTextColor || "#ffffff");
+        document.documentElement.style.setProperty("--btn-bg-color",storedStyle.buttonBgColor || "#000000");
       } catch (err) {
         console.error("Failed to load stored form:", err);
       }
@@ -95,18 +91,18 @@ export function useFormStorage(): {
   // Update CSS variables when formStyle changes
   useEffect(() => {
     if (formStyle.bgColor) {
-      document.documentElement.style.setProperty(
-        "--bg-color",
-        formStyle.bgColor
-      );
+      document.documentElement.style.setProperty("--bg-color",formStyle.bgColor);
     }
     if (formStyle.textColor) {
-      document.documentElement.style.setProperty(
-        "--text-color",
-        formStyle.textColor
-      );
+      document.documentElement.style.setProperty("--text-color",formStyle.textColor);
     }
-  }, [formStyle.bgColor, formStyle.textColor]);
+    if (formStyle.buttonTextColor) {
+      document.documentElement.style.setProperty("--btn-text-color",formStyle.buttonTextColor);
+    }
+    if (formStyle.buttonBgColor) {
+      document.documentElement.style.setProperty("--btn-bg-color",formStyle.buttonBgColor);
+    }
+  }, [formStyle.bgColor, formStyle.buttonBgColor, formStyle.buttonTextColor, formStyle.textColor]);
 
   return {
     fields,

@@ -155,9 +155,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
       <div className="bg-primary rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-primary">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-primary">
-              Form Preview
-            </h2>
+            <h2 className="text-xl font-semibold text-primary">Form Preview</h2>
             <button
               onClick={onClose}
               className="text-primary-light transition-colors"
@@ -179,7 +177,7 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
           </div>
         </div>
 
-        <div 
+        <div
           className="p-6"
           style={{
             background: formStyle.bgColor,
@@ -221,7 +219,10 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
           )}
           {title && (
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-center" style={{ color: formStyle.textColor }}>
+              <h1
+                className="text-3xl font-bold text-center"
+                style={{ color: formStyle.textColor }}
+              >
                 {title}
               </h1>
             </div>
@@ -249,14 +250,10 @@ export default function PreviewModal({ isOpen, onClose, fields, title, submitBut
               ))}
 
               <div className="pt-4">
-                <Button 
-                  type='primary'
-                  onSubmit={()=> console.log("")}
-                  className="!h-9 !font-bold focus:!border-0"
-                  style={{
-                    backgroundColor: formStyle.buttonBgColor,
-                    color: formStyle.buttonTextColor,
-                  }}
+                <Button
+                  type="primary"
+                  onSubmit={() => console.log("")}
+                  className="btn-bg-primary !h-9 btn-text-primary !font-bold focus:!border-0 flex items-center"
                 >
                   {submitButtonText || "Submit"} <ArrowRightOutlined />
                 </Button>
